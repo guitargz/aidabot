@@ -3,7 +3,7 @@
 def cube(num):
     return pow(num,3) #comment
 
-number = 3
+number = 2
 
 if number > 3:
     result = cube(number)
