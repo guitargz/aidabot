@@ -5,8 +5,6 @@ services:
     build: aida
     secrets: 
       - bot_token
-    ports:
-      - 3000:3000
     working_dir: /code
     volumes:
       - aida:/code/results
@@ -14,8 +12,6 @@ services:
   
   gpt-2:
     build: gpt-2
-    ports:
-      - 3001:3001
     working_dir: /code
     volumes:
       - aida:/code/results
@@ -23,8 +19,6 @@ services:
 
   stylegan:
     build: stylegan
-    ports:
-      - 3002:3002
     working_dir: /code
     volumes:
       - aida:/code/results
