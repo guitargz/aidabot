@@ -1,0 +1,36 @@
+version: "3.7"
+
+services:
+  bot:
+    image: python:3.9.4-slim
+    command: >
+        sh -c "pip install aiogram && 
+        python3 aida.py"
+    ports:
+      - 3000:3000
+    working_dir: /app
+    volumes:
+      - ./:/app
+    restart: always
+  
+  gpt-2:
+    image: huggingface/transformers-cpu
+    command: python3 gpt2gen.py
+    ports:
+      - 3001:3001
+    working_dir: /app
+    volumes:
+      - ./:/app
+    restart: always
+
+  stylegan:
+    image: tensorflow/tensorflow:1.15.5-py3
+    command: >      
+        sh -c "pip install matplotlib Pillow requests tqdm ipdb &&
+        python3 sgan_gen.py"
+    ports:
+      - 3002:3002
+    working_dir: /app
+    volumes:
+      - ./:/app
+    restart: always

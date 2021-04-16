@@ -1,0 +1,4 @@
+Pillow==8.2.0
+tensorflow-cpu==1.15.0
+requests==2.25.1
+ipdb==0.13.7

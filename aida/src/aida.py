@@ -1,5 +1,6 @@
 import asyncio
 from aiogram import Bot, Dispatcher, executor, types
+import os
 
 MY_CHANNEL = '@aida_enelpi' 
 
@@ -10,8 +11,8 @@ async def start_handler(event: types.Message):
     )
 
 async def main():
-    bot = Bot(token="1722872904:AAGqv6VDMDbPj_XZX3_UJ7i8fqjMHrAgj8k")
-    dp = Dispatcher(bot)
+    bot = Bot(token=os.environ['BOT_API_KEY'])
+    #dp = Dispatcher(bot)
     await asyncio.sleep(200)
     while True:
         #open styleGAN

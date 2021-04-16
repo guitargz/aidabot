@@ -2,35 +2,38 @@ version: "3.7"
 
 services:
   bot:
-    image: python:3.9.4-slim
-    command: >
-        sh -c "pip install aiogram && 
-        python3 aida.py"
+    build: aida
+    secrets: 
+      - bot_token
     ports:
       - 3000:3000
-    working_dir: /app
+    working_dir: /code
     volumes:
-      - ./:/app
+      - aida:/code/results
     restart: always
+    environment:
+      - BOT_API_KEY=/run/secrets/bot_token
   
   gpt-2:
-    image: huggingface/transformers-cpu
-    command: python3 gpt2gen.py
+    build: gpt-2
     ports:
       - 3001:3001
-    working_dir: /app
+    working_dir: /code
     volumes:
-      - ./:/app
+      - aida:/code/results
     restart: always
 
   stylegan:
-    image: tensorflow/tensorflow:1.15.5-py3
-    command: >      
-        sh -c "pip install matplotlib Pillow requests tqdm ipdb &&
-        python3 sgan_gen.py"
+    build: stylegan
     ports:
       - 3002:3002
-    working_dir: /app
+    working_dir: /code
     volumes:
-      - ./:/app
+      - aida:/code/results
     restart: always
+
+volumes: 
+  aida:
+secrets:
+  bot_token: 
+    file: token.txt
