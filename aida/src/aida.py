@@ -1,6 +1,5 @@
 import asyncio
 from aiogram import Bot, Dispatcher, executor, types
-import os
 
 MY_CHANNEL = '@aida_enelpi' 
 
@@ -11,7 +10,12 @@ async def start_handler(event: types.Message):
     )
 
 async def main():
-    bot = Bot(token=os.environ['BOT_API_KEY'])
+    #read password
+    pass_file = "/run/secrets/bot_token"
+    password_file = open(pass_file, 'rb')
+    password = password_file.readline().decode('utf-8')
+    password_file.close()
+    bot = Bot(token=password)
     #dp = Dispatcher(bot)
     await asyncio.sleep(200)
     while True:

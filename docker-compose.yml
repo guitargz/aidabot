@@ -11,8 +11,6 @@ services:
     volumes:
       - aida:/code/results
     restart: always
-    environment:
-      - BOT_API_KEY=/run/secrets/bot_token
   
   gpt-2:
     build: gpt-2
