@@ -22,7 +22,7 @@ async def main():
         captions_file = open(caption_file, 'rb')
         caption = captions_file.readline().decode('utf-8')
         captions_file.close()
-        #post to TG
+        #post to telegram
         try:
             #disp = Dispatcher(bot=bot)
             #disp.register_message_handler(start_handler, commands={"start", "restart"})
