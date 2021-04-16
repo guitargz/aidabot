@@ -1,13 +1,13 @@
 version: "3.7"
 
+#this compose is to run on ready Docker Hub images
+
 services:
   bot:
     image: python:3.9.4-slim
     command: >
         sh -c "pip install aiogram && 
         python3 aida.py"
-    ports:
-      - 3000:3000
     working_dir: /app
     volumes:
       - ./:/app
@@ -16,8 +16,6 @@ services:
   gpt-2:
     image: huggingface/transformers-cpu
     command: python3 gpt2gen.py
-    ports:
-      - 3001:3001
     working_dir: /app
     volumes:
       - ./:/app
@@ -28,8 +26,6 @@ services:
     command: >      
         sh -c "pip install matplotlib Pillow requests tqdm ipdb &&
         python3 sgan_gen.py"
-    ports:
-      - 3002:3002
     working_dir: /app
     volumes:
       - ./:/app
