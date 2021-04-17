@@ -10,7 +10,7 @@ def generate_caption(seed):
     for sep in '.!?':
         caption = caption.rsplit(sep, 1)
         if len(caption) > 1:
-            return caption[0]
+            return (str(caption[0])+sep)
     return caption
 
 def main():
