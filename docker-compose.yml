@@ -9,6 +9,7 @@ services:
     volumes:
       - aida:/code/results
     restart: always
+    tty: true
   
   gpt-2:
     build: gpt-2
@@ -16,6 +17,7 @@ services:
     volumes:
       - aida:/code/results
     restart: always
+    tty: true
 
   stylegan:
     build: stylegan
@@ -23,6 +25,7 @@ services:
     volumes:
       - aida:/code/results
     restart: always
+    tty: true
 
 volumes: 
   aida:

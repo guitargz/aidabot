@@ -118,6 +118,11 @@ def init_tf(config_dict: dict = None) -> None:
     # Create default TensorFlow session.
     create_session(cfg, force_as_default=True)
 
+'AGR'
+def close_tf() -> None:
+    session = tf.get_default_session()
+    session.close()
+
 
 def assert_tf_initialized():
     """Check that TensorFlow session has been initialized."""

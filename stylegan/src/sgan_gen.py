@@ -16,6 +16,7 @@ import config
 import glob
 import random
 import time
+import gc
 
 MODEL = 'network-snapshot-011140.pkl'
 PREFIX = 'Demo'
@@ -34,9 +35,9 @@ def load_Gs(filepath):
     return Gs
 
 def main():
-    # Initialize TensorFlow.
-    tflib.init_tf()
     while True:
+        # Initialize TensorFlow.
+        tflib.init_tf()
         seed = random.randint(0,10000)
         # Generate Image
         os.makedirs(config.result_dir, exist_ok=True)
@@ -54,6 +55,15 @@ def main():
         # Save image.
         PIL.Image.fromarray(images[0], 'RGB').save(save_path)
         print('* Image [' + save_name + '] has beed saved to ./result')
+
+        #free memory
+        del Gs
+        del rnd
+        del latents
+        del images
+        gc.collect()
+        tflib.close_tf()
+
         time.sleep(21600)
 
 
