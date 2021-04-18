@@ -63,6 +63,7 @@ def main():
         del latents
         del images
         gc.collect()
+        tflib.close_tf()
 
         time.sleep(21600)
 
