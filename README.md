@@ -1,5 +1,5 @@
 # Aidabot
-A telegram bot generating neural network content (images with StyleGAN and text with GPT-2) using aiogram, Redis queue and Docker.
+A Telegram bot that generates neural network content (images with StyleGAN and text with GPT-2) and posts to your channel using aiogram, Redis queue and Docker.
 
 # Installation
 1. Clone the code.
