@@ -38,6 +38,7 @@ def main():
     # Initialize TensorFlow.
     tflib.init_tf()
     while True:
+
         seed = random.randint(0,10000)
         # Generate Image
         os.makedirs(config.result_dir, exist_ok=True)
