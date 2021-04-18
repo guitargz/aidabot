@@ -15,10 +15,10 @@ async def main():
     password_file = open(pass_file, 'rb')
     password = password_file.readline().decode('utf-8')
     password_file.close()
-    bot = Bot(token=password)
-    #dp = Dispatcher(bot)
     await asyncio.sleep(200)
     while True:
+        bot = Bot(token=password)
+        #dp = Dispatcher(bot)
         #open styleGAN
         photo = "results/Demo_today.png"
         photos = open(photo, 'rb')
