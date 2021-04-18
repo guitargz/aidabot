@@ -35,9 +35,9 @@ def load_Gs(filepath):
     return Gs
 
 def main():
+    # Initialize TensorFlow.
+    tflib.init_tf()
     while True:
-        # Initialize TensorFlow.
-        tflib.init_tf()
         seed = random.randint(0,10000)
         # Generate Image
         os.makedirs(config.result_dir, exist_ok=True)
@@ -62,7 +62,6 @@ def main():
         del latents
         del images
         gc.collect()
-        tflib.close_tf()
 
         time.sleep(21600)
 
