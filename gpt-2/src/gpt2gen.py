@@ -2,6 +2,7 @@ from transformers import pipeline, set_seed
 import random
 import time
 import gc
+import redis
 
 def generate_caption(seed):
     generator = pipeline('text-generation', model='gpt2')
@@ -20,14 +21,20 @@ def generate_caption(seed):
     return caption
 
 def main():
-    file = "results/Demo_today.txt"
+    # Subscribe to the Redis queue
+    r = redis.Redis(host='redis', port=6379, db=0)
+    p = r.pubsub(ignore_subscribe_messages=True)
+    p.subscribe('gpt-2-request')
+    
+    #Get a message from the queue
     while True:
-        files = open(file, 'wb')
-        caption = generate_caption(random.randint(1, 999999999))
-        caption = u''.join(caption).encode('utf-8', 'ignore')
-        files.write(caption)
-        files.close()
-        time.sleep(21600)
+        message = p.get_message()
+        print(message)
+        if message:
+            caption = generate_caption(random.randint(1, 999999999))
+            caption = u''.join(caption).encode('utf-8', 'ignore')
+            r.publish('gpt-2-caption', caption)
+        time.sleep(10)
 
 if __name__ == "__main__":
     main()

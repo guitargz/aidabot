@@ -27,6 +27,9 @@ services:
     restart: always
     tty: true
 
+  redis:
+    image: redis:alpine3.13
+
 volumes: 
   aida:
 secrets:

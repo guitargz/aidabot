@@ -17,9 +17,10 @@ import glob
 import random
 import time
 import gc
+import redis
+import io
 
 MODEL = 'network-snapshot-011140.pkl'
-PREFIX = 'Demo'
 
 def load_Gs(filepath):
     # Load pre-trained network.
@@ -37,35 +38,41 @@ def load_Gs(filepath):
 def main():
     # Initialize TensorFlow.
     tflib.init_tf()
+    # Subscribe to the Redis queue
+    r = redis.Redis(host='redis', port=6379, db=0)
+    p = r.pubsub(ignore_subscribe_messages=True)
+    p.subscribe('stylegan-request')
+
     while True:
+        #Get a message from the queue
+        message = p.get_message()
+        print(message)
+        if(message):
+            seed = random.randint(0,10000)
+            # Generate Image   
+            Gs = load_Gs(MODEL)
+            rnd = np.random.RandomState(seed)
+            latents = rnd.randn(1, Gs.input_shape[1])
+            fmt = dict(func=tflib.convert_images_to_uint8, nchw_to_nhwc=True)
+            print('\n * Generating...'*6)
+            images = Gs.run(latents, None, truncation_psi=0.5, randomize_noise=True, output_transform=fmt)
+            print('\n * Done'*10)
+            
+            # Save image.
+            with io.BytesIO() as photos:
+                PIL.Image.fromarray(images[0], 'RGB').save(photos, 'PNG')
+                contents = photos.getvalue()
+                r.publish('stylegan-photos', contents)
 
-        seed = random.randint(0,10000)
-        # Generate Image
-        os.makedirs(config.result_dir, exist_ok=True)
-        save_name = PREFIX + '_' + str('today') + '.png'
-        save_path = os.path.join(config.result_dir, save_name)
+            #free memory
+            del Gs
+            del rnd
+            del latents
+            del images
+            gc.collect()
+
+        time.sleep(10)
         
-        Gs = load_Gs(MODEL)
-        rnd = np.random.RandomState(seed)
-        latents = rnd.randn(1, Gs.input_shape[1])
-        
-        fmt = dict(func=tflib.convert_images_to_uint8, nchw_to_nhwc=True)
-        print('\n * Generating...'*6)
-        images = Gs.run(latents, None, truncation_psi=0.5, randomize_noise=True, output_transform=fmt)
-        print('\n * Done'*10)
-        # Save image.
-        PIL.Image.fromarray(images[0], 'RGB').save(save_path)
-        print('* Image [' + save_name + '] has beed saved to ./result')
-
-        #free memory
-        del Gs
-        del rnd
-        del latents
-        del images
-        gc.collect()
-        tflib.close_tf()
-
-        time.sleep(21600)
 
 
 if __name__ == "__main__":
