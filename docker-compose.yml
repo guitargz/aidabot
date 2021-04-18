@@ -9,7 +9,11 @@ services:
     volumes:
       - aida:/code/results
     restart: always
+<<<<<<< HEAD
     tty: true
+=======
+    #tty: true
+>>>>>>> revert
   
   gpt-2:
     build: gpt-2
@@ -17,7 +21,11 @@ services:
     volumes:
       - aida:/code/results
     restart: always
+<<<<<<< HEAD
     tty: true
+=======
+    #tty: true
+>>>>>>> revert
 
   stylegan:
     build: stylegan
@@ -25,7 +33,11 @@ services:
     volumes:
       - aida:/code/results
     restart: always
+<<<<<<< HEAD
     tty: true
+=======
+    #tty: true
+>>>>>>> revert
 
 volumes: 
   aida:
