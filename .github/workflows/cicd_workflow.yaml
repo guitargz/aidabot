@@ -1,0 +1,13 @@
+name: cicd-oracle
+on:
+  push:
+    branches:
+      - main
+jobs:
+  build-job:
+    name: Build Job
+    runs-on: ubuntu-latest
+    steps:
+      - name: 'Start build job'
+        run: |
+          echo "Starting the build job."
