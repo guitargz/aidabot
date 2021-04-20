@@ -37,7 +37,14 @@ jobs:
 
     - name: 'Check Existing Instance'
       run: |
-        echo "INSTANCE_OCID=$(oci compute instance list --lifecycle-state RUNNING --compartment-id ${{secrets.VM_COMPARTMENT_OCID}} --display-name free-docker-vm --query "data [0].id" --raw-output)" >> $GITGUB_ENV
+        echo "INSTANCE_OCID=$( \
+          oci compute instance list \
+          --lifecycle-state RUNNING \
+          --compartment-id ${{secrets.VM_COMPARTMENT_OCID}} \
+          --display-name free-docker-vm \
+          --query "data [0].id" \
+          --raw-output \
+        )" >> $GITHUB_ENV
 
     - name: 'Create Instance'
       if: ${{!env.instance_ocid}}
@@ -55,7 +62,7 @@ jobs:
             --wait-for-state RUNNING \
             --query "data.id" \
             --raw-output \
-        )" >> $GITGUB_ENV
+        )" >> $GITHUB_ENV
       
     - name: 'Get Instance IP'
       run: |
@@ -64,7 +71,7 @@ jobs:
           --instance-id ${{env.INSTANCE_OCID}} \
           --query 'data [0]."public-ip"' \
           --raw-output \
-        )" >> $GITGUB_ENV
+        )" >> $GITHUB_ENV
 
     - name: 'Wait for SSH'
       run: |
