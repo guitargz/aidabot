@@ -20,7 +20,7 @@ import gc
 import redis
 import io
 
-MODEL = 'network-snapshot-011140.pkl'
+MODEL = os.environ['MODEL']
 
 def load_Gs(filepath):
     # Load pre-trained network.
@@ -38,6 +38,7 @@ def load_Gs(filepath):
 def main():
     # Initialize TensorFlow.
     tflib.init_tf()
+    print(MODEL)
     # Subscribe to the Redis queue
     r = redis.Redis(host='redis', port=6379, db=0)
     p = r.pubsub(ignore_subscribe_messages=True)

@@ -1,8 +1,9 @@
 import asyncio
 from aiogram import Bot, Dispatcher, executor, types
 import redis
+import os
 
-MY_CHANNEL = '@aida_enelpi' 
+MY_CHANNEL = os.environ['MY_CHANNEL'] 
 
 async def start_handler(event: types.Message):
     await event.answer(
@@ -40,6 +41,7 @@ async def get_photos(r, p):
         await asyncio.sleep(10)
 
 async def main():
+    print(MY_CHANNEL)
     #read password
     pass_file = "/run/secrets/bot_token"
     password_file = open(pass_file, 'rb')
