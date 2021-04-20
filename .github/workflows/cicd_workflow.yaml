@@ -80,14 +80,14 @@ jobs:
                 echo "SSH not available..."
         done; echo "SSH ready!"
 
-    - name: 'Stop containers (Stop App?)'
+    - name: 'Stop containers - was Stop App'
       run: |
       echo "Stopping the running containers."
 
-    - name: 'Push containers (Push Jar?)'
+    - name: 'Push containers - was Push Jar'
       run: |
       echo "Pushing new containers."
 
-    - name: 'Start new containers (Start app?)'
+    - name: 'Start new containers - was Start app'
       run: |
       echo "Starting the new containers."
