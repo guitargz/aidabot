@@ -34,6 +34,7 @@ jobs:
       run: |
         oci setup repair-file-permissions --file /home/runner/.oci/config
         oci setup repair-file-permissions --file /home/runner/.oci/key.pem
+        echo "${{secrets.VM_SSH_PUB_KEY}}" >> /home/runner/.oci/id_vm.pub
 
     - name: 'Check Existing Instance'
       run: |
