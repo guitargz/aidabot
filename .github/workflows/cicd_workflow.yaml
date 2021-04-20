@@ -82,12 +82,12 @@ jobs:
 
     - name: 'Stop containers - was Stop App'
       run: |
-      echo "Stopping the running containers."
+        echo "Stopping the running containers."
 
     - name: 'Push containers - was Push Jar'
       run: |
-      echo "Pushing new containers."
+        echo "Pushing new containers."
 
     - name: 'Start new containers - was Start app'
       run: |
-      echo "Starting the new containers."
+        echo "Starting the new containers."
