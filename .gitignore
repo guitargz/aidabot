@@ -1,4 +1,5 @@
-network-snapshot-011140.pkl
+*.pkl
+network-snapshot-011170.pkl
 results
 __pycache__
 cache
