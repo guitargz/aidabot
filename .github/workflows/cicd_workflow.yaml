@@ -37,7 +37,7 @@ jobs:
 
     - name: 'Check Existing Instance'
       run: |
-        echo "instance_ocid=$( \
+        echo "INSTANCE_OCID=$( \
           oci compute instance list \
           --lifecycle-state RUNNING \
           --compartment-id ${{secrets.VM_COMPARTMENT_OCID}} \
