@@ -20,7 +20,6 @@ async def get_caption(r, p):
     r.publish('gpt-2-request', 1)
     while True:
         message = p.get_message()
-        print(message)
         if message:
             if message['channel']==b'gpt-2-caption':
                 return message['data'].decode('utf-8')
@@ -50,8 +49,10 @@ async def main():
 
     #Subscribe to the Redis queue
     r = redis.Redis(host='redis', port=6379, db=0)
-    p = r.pubsub(ignore_subscribe_messages=True)
-    p.subscribe('gpt-2-caption', 'stylegan-photos')
+    p_photos = r.pubsub(ignore_subscribe_messages=True)
+    p_photos.subscribe('stylegan-photos')
+    p_caption = r.pubsub(ignore_subscribe_messages=True)
+    p_caption.subscribe('gpt-2-caption')
 
     while True:
         bot = Bot(token=password)
@@ -59,8 +60,8 @@ async def main():
      
         #Get content from the Redis queue
         photos, caption = await asyncio.gather(
-            get_photos(r, p),
-            get_caption(r, p)
+            get_photos(r, p_photos),
+            get_caption(r, p_caption)
         )
 
         #Post to Telegram
