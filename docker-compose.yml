@@ -6,8 +6,6 @@ services:
     secrets: 
       - bot_token
     working_dir: /code
-    volumes:
-      - aida:/code/results
     restart: always
     tty: true
     environment:
@@ -17,32 +15,27 @@ services:
   gpt-2:
     build: gpt-2
     working_dir: /code
-    volumes:
-      - aida:/code/results
     restart: always
     tty: true
-    mem_limit: 760m #980m #set to fit your machine
+    mem_limit: 1g #980m #set to fit your machine
     memswap_limit: 4g #set to fit your machine
     
 
   stylegan:
     build: stylegan
     working_dir: /code
-    volumes:
-      - aida:/code/results
     restart: always
     tty: true
     environment: 
       - MODEL=network-snapshot-011170.pkl
-    mem_limit: 200m #960m #set to fit your machine
+    mem_limit: 500m #960m #set to fit your machine
     memswap_limit: 4g #set to fit your machine
 
   redis:
     image: redis:alpine3.13
     mem_limit: 10m
+    restart: always
 
-volumes: 
-  aida:
 secrets:
   bot_token: 
     file: token.txt
