@@ -2,7 +2,7 @@ name: cicd-oracle
 on:
   push:
     branches:
-      - main
+      - test
 jobs:
   build-job:
     name: Build Job
@@ -81,14 +81,41 @@ jobs:
                 echo "SSH not available..."
         done; echo "SSH ready!"
 
-    - name: 'Stop containers - was Stop App'
-      run: |
-        echo "Stopping the running containers."
+    - name: 'Stop containers'
+      uses: appleboy/ssh-action@master
+      with:
+        host: ${{ env.INSTANCE_IP }}
+        username: ubuntu
+        key: ${{ secrets.VM_SSH_PRIVATE_KEY }}
+        script: |
+          pid=`docker ps | grep "aida" | awk '{print $2}'`
+          if [ "$pid" == "" ]; then
+            echo "Process not found"
+          else
+            cd /app/aidabot
+            docker-compose down
+            docker-compose kill
+            docker image prune -af
+          fi
+          sudo rm -rf /app
 
-    - name: 'Push containers - was Push Jar'
-      run: |
-        echo "Pushing new containers."
+    - name: 'Push app'
+      uses: appleboy/scp-action@master
+      with:
+        host: ${{ env.INSTANCE_IP }}
+        username: ubuntu
+        key: ${{ secrets.VM_SSH_PRIVATE_KEY }}
+        source: "/home/runner/work/aidabot/aidabot"
+        target: "/app"
+        strip_components: 2
 
-    - name: 'Start new containers - was Start app'
-      run: |
-        echo "Starting the new containers."
+    - name: 'Start new containers'
+      uses: appleboy/ssh-action@master
+      with:
+        host: ${{ env.INSTANCE_IP }}
+        username: ubuntu
+        key: ${{ secrets.VM_SSH_PRIVATE_KEY }}
+        script: |
+            cd /app/aidabot
+            docker-compose build
+            docker-compose up
