@@ -3,6 +3,7 @@ import random
 import time
 import gc
 import redis
+from datetime import datetime
 
 def generate_caption(seed):
     generator = pipeline('text-generation', model='gpt2')
@@ -34,6 +35,9 @@ def main():
             caption = generate_caption(random.randint(1, 999999999))
             caption = u''.join(caption).encode('utf-8', 'ignore')
             r.publish('gpt-2-caption', caption)
+        now = datetime.now()
+        dt_string = now.strftime("%d/%m/%Y %H:%M:%S")
+        print(f"{dt_string}: GPT-2 is still alive")
         time.sleep(10)
 
 if __name__ == "__main__":

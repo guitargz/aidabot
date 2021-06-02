@@ -19,6 +19,7 @@ import time
 import gc
 import redis
 import io
+from datetime import datetime
 
 MODEL = os.environ['MODEL']
 
@@ -72,6 +73,9 @@ def main():
             del images
             gc.collect()
 
+        now = datetime.now()
+        dt_string = now.strftime("%d/%m/%Y %H:%M:%S")
+        print(f"{dt_string}: StyleGAN is still alive")
         time.sleep(10)
         
 

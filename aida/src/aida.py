@@ -67,10 +67,10 @@ async def main():
                     get_photos(r, p_photos),
                     get_caption(r, p_caption)
                 ),
-                timeout=500.0,
+                timeout=900.0,
             )
         except asyncio.TimeoutError:
-            print(f"oops took longer than 500s!")
+            print(f"oops took longer than 900s!")
             continue
             
         #Post to Telegram
