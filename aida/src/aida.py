@@ -2,6 +2,7 @@ import asyncio
 from aiogram import Bot, Dispatcher, executor, types
 import redis
 import os
+from datetime import datetime
 
 MY_CHANNEL = os.environ['MY_CHANNEL'] 
 
@@ -55,15 +56,23 @@ async def main():
     p_caption.subscribe('gpt-2-caption')
 
     while True:
+        print("Requesting a photo and a caption")
         bot = Bot(token=password)
         #dp = Dispatcher(bot)
-     
-        #Get content from the Redis queue
-        photos, caption = await asyncio.gather(
-            get_photos(r, p_photos),
-            get_caption(r, p_caption)
-        )
-
+    
+        #Get content from the Redis queue   
+        try:
+            photos, caption = await asyncio.wait_for (
+                asyncio.gather (
+                    get_photos(r, p_photos),
+                    get_caption(r, p_caption)
+                ),
+                timeout=300.0,
+            )
+        except asyncio.TimeoutError:
+            print(f"oops took longer than 300s!")
+            continue
+            
         #Post to Telegram
         try:
             #disp = Dispatcher(bot=bot)
@@ -73,7 +82,12 @@ async def main():
         finally:
             await bot.close()
         #wait
-        await asyncio.sleep(21600)
+        for wait in range(1,217): 
+            now = datetime.now()
+            dt_string = now.strftime("%d/%m/%Y %H:%M:%S")
+            print(f"{dt_string}: Bot is still alive")
+            await asyncio.sleep(100)
+        
 
 if __name__ == "__main__":
     asyncio.run(main())

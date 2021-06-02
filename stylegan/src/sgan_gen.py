@@ -47,8 +47,8 @@ def main():
     while True:
         #Get a message from the queue
         message = p.get_message()
-        print(message)
         if(message):
+            print(message)
             seed = random.randint(0,10000)
             # Generate Image   
             Gs = load_Gs(MODEL)

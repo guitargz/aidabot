@@ -10,7 +10,7 @@ services:
     tty: true
     environment:
       - MY_CHANNEL=@aida_enelpi
-    mem_limit: 50m
+    mem_limit: 100m
   
   gpt-2:
     build: gpt-2
@@ -27,13 +27,13 @@ services:
     restart: always
     tty: true
     environment: 
-      - MODEL=network-snapshot-010180.pkl
-    mem_limit: 500m #960m #set to fit your machine
+      - MODEL=network-snapshot-010390.pkl
+    mem_limit: 1g #960m #set to fit your machine
     memswap_limit: 4g #set to fit your machine
 
   redis:
     image: redis:alpine3.13
-    mem_limit: 30m
+    mem_limit: 100m
     restart: always
 
 secrets:

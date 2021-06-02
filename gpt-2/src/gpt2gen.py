@@ -29,8 +29,8 @@ def main():
     #Get a message from the queue
     while True:
         message = p.get_message()
-        print(message)
         if message:
+            print(message)
             caption = generate_caption(random.randint(1, 999999999))
             caption = u''.join(caption).encode('utf-8', 'ignore')
             r.publish('gpt-2-caption', caption)
